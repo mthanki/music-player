@@ -1,0 +1,82 @@
+.control-panel {
+    /* background-color: rgba(0,0,0, .5); */
+    background-image: linear-gradient(to right bottom, #de65f3, #dc94ff, #dfbbff, #ebdeff, #ffffff);
+    display: flex;
+    justify-content: space-evenly;
+    align-items:center;
+    border-radius: 25px;
+    padding: 20px;
+    width: 80vw;
+    margin-bottom: 3px;
+    border-left: 15px solid black;
+    border-right: 15px solid black;
+}
+
+.control-button {
+    background-color: black;
+    /* background-image: radial-gradient(circle, #000000, #18100f, #261c16, #30281a, #353721, #3a4528, #3c5433, #396441, #427549, #4b8750, #569a56, #62ac5c); */
+    color: white;
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.small {
+    height: 40px;
+    width: 40px;
+}
+
+.songs-list {
+    overflow: auto;
+    list-style-type: none;
+}
+
+.songs-list::-webkit-scrollbar {
+    width: 7px;
+    background-color: transparent;
+}
+
+.songs-list:hover::-webkit-scrollbar {
+    width: 7px;
+    background-color: #f5f5f500;
+}
+
+.songs-list::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.songs-list:hover::-webkit-scrollbar-track {
+    background: #f1f1f173;
+    border-radius: 10px;
+}
+
+.songs-list::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.songs-list:hover::-webkit-scrollbar-thumb {
+    background: #bac8ca;
+    border-radius: 10px;
+}
+
+.songs-list::-webkit-scrollbar-thumb:hover {
+    background: #78b10f;
+}
+
+.highlighted-item {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+    transition: background-color .1s, color .1s;
+}
+
+.highlighted-item:hover {
+    cursor: pointer;
+    background-color: gray;
+    color: white;
+}

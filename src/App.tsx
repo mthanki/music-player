@@ -1,14 +1,21 @@
+import {
+    ChangeEvent,
+    createContext,
+    useContext,
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+} from "react";
 import "./App.css";
+import MusicPlayer from "./music-player/MusicPlayer";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>And there is nothing here, not yet</p>
-        <p>you know what, I changed my mind</p>
-      </header>
-    </div>
-  );
+    return (
+        <section className="App">
+            <MusicPlayer />
+        </section>
+    );
 }
 
 export default App;

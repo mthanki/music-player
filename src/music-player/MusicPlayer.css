@@ -13,6 +13,7 @@
 }
 
 .control-button {
+    cursor: pointer;
     background-color: black;
     /* background-image: radial-gradient(circle, #000000, #18100f, #261c16, #30281a, #353721, #3a4528, #3c5433, #396441, #427549, #4b8750, #569a56, #62ac5c); */
     color: white;
@@ -30,8 +31,17 @@
 }
 
 .songs-list {
+    padding-inline-start: 0;
     overflow: auto;
     list-style-type: none;
+    max-height: 150px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
 }
 
 .songs-list::-webkit-scrollbar {
@@ -71,12 +81,18 @@
 .highlighted-item {
     padding: 10px;
     border-radius: 5px;
-    margin: 5px 0;
     transition: background-color .1s, color .1s;
+
+    /* margin-right: 10px;
+    margin-left: 10px; */
 }
 
 .highlighted-item:hover {
     cursor: pointer;
-    background-color: gray;
+    background-color: rgba(137, 136, 136, 0.058);
     color: white;
+}
+
+.playing {
+    text-decoration: underline;
 }

@@ -1,26 +1,27 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import "./MusicPlayer.css";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import { BiSkipNextCircle, BiSkipPreviousCircle } from "react-icons/bi";
+import NowPlaying from "../NowPlaying/NowPLaying";
 
-interface MusicPlayerProps {}
+interface MusicPlayerProps { }
 
-interface Song {
+export interface Song {
     file: File;
     name: string;
     duration: number;
 }
 
-const MusicPlayer = ({}: MusicPlayerProps) => {
+const MusicPlayer = ({ }: MusicPlayerProps) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [songs, setSongs] = useState<Song[]>([]);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
-    const [files, setFiles] = useState<FileList | null>();
-    const [audioFiles, setAudioFiles] = useState<File[]>([]);
     const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
+    const [repeatMode, setRepeatMode] = useState<'none' | 'song' | 'all'>('none');
+    const [shuffleMode, setShuffleMode] = useState<boolean>(false);
 
     useEffect(() => {
         if (audioRef.current) {
@@ -29,6 +30,7 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                 "loadedmetadata",
                 handleLoadedMetadata
             );
+            audioRef.current.addEventListener('ended', handleSongEnd); // Add this line
             return () => {
                 if (audioRef.current) {
                     audioRef.current.removeEventListener(
@@ -39,6 +41,7 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                         "loadedmetadata",
                         handleLoadedMetadata
                     );
+                    audioRef.current.removeEventListener('ended', handleSongEnd); // Add this line
                 }
             };
         }
@@ -46,8 +49,8 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
 
     useEffect(() => {
         if (audioRef.current) {
-            // audioRef.current.load();
-            // setIsPlaying(true);
+            audioRef.current.load();
+            setIsPlaying(true);
         }
     }, [currentSongIndex]);
 
@@ -65,8 +68,6 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
         const newSongs = createSongsFromFiles(newFiles);
         setSongs((prevSongs) => [...prevSongs, ...newSongs]);
 
-        console.log(`SONGS- ${songs}`);
-
         setCurrentSongIndex(songs.length - 1);
         if (audioRef.current) {
             audioRef.current.load();
@@ -80,9 +81,17 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
         const newSongs = createSongsFromFiles(newFiles);
 
         setSongs((prevSongs) => [...prevSongs, ...newSongs]);
-        setCurrentSongIndex(audioFiles.length);
+        setCurrentSongIndex(songs.length);
+        console.log(`SONGS- ${JSON.stringify(songs)}`);
 
-        console.log(`SONGS- ${songs}`);
+        if (audioRef.current) {
+            audioRef.current.load();
+            setIsPlaying(true);
+        }
+    };
+
+    const handleSongClick = (index: number) => {
+        setCurrentSongIndex(index);
 
         if (audioRef.current) {
             audioRef.current.load();
@@ -91,14 +100,11 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
     };
 
     const playNextSong = () => {
-        if (currentSongIndex < songs.length - 1) {
-            setCurrentSongIndex(currentSongIndex + 1);
+        if (shuffleMode) {
+            const nextSongIndex = getRandomSongIndex();
+            setCurrentSongIndex(nextSongIndex);
         } else {
-            setCurrentSongIndex(0);
-        }
-        if (audioRef.current) {
-            audioRef.current.load();
-            setIsPlaying(true);
+            setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
         }
     };
 
@@ -108,6 +114,7 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
         } else {
             setCurrentSongIndex(songs.length - 1);
         }
+
         if (audioRef.current) {
             audioRef.current.load();
             setIsPlaying(true);
@@ -122,6 +129,36 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                 audioRef.current.play();
             }
             setIsPlaying(!isPlaying);
+        }
+    };
+
+    const toggleShuffleMode = () => {
+        setShuffleMode(!shuffleMode);
+    };
+
+    const toggleRepeatMode = () => {
+        const modes: ('none' | 'song' | 'all')[] = ['none', 'song', 'all'];
+        const currentIndex = modes.indexOf(repeatMode);
+        const nextIndex = (currentIndex + 1) % modes.length;
+        setRepeatMode(modes[nextIndex]);
+    };
+
+    const getRandomSongIndex = () => {
+        const remainingSongs = songs.filter((_, index) => index !== currentSongIndex);
+        const randomIndex = Math.floor(Math.random() * remainingSongs.length);
+        const nextSongIndex = songs.indexOf(remainingSongs[randomIndex]);
+        return nextSongIndex;
+    }
+
+    const handleSongEnd = () => {
+        if (currentSongIndex === songs.length - 1) {
+            // Reached the end of the playlist, stop playing
+            audioRef.current?.pause();
+            setIsPlaying(false);
+            setCurrentTime(0);
+        } else {
+            // Play the next song
+            setCurrentSongIndex(currentSongIndex + 1);
         }
     };
 
@@ -161,7 +198,7 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
     };
 
     return (
-        <>
+        <div>
             {/* drag and drop area */}
             <div
                 onClick={handleOpenFilePicker}
@@ -183,16 +220,17 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
             <ul className="songs-list" style={{ overflowX: "hidden" }}>
                 {songs.map((song, index) => (
                     <li
-                        className="highlighted-item"
-                        style={{
-                            padding: "10px",
-                        }}
+                        onClick={() => handleSongClick(index)}
+                        className={`highlighted-item ${index === currentSongIndex ? 'playing' : ''}`}
                         key={index}
                     >
                         {song.name} - {formatTime(song.duration)}
                     </li>
                 ))}
             </ul>
+            {/* Now Playing */}
+            {/* <NowPlaying song={songs[currentSongIndex]} /> */}
+            {currentSongIndex}
             {/* Main Player */}
             <div className="control-panel">
                 <div>
@@ -228,11 +266,14 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                     <div
                         style={{
                             display: "flex",
-                            flexDirection: "column",
-                            flex: 1,
-                            width: "100%",
+                            flexDirection: "row",
+                            flex: "1 0 100%",
+                            marginBottom: '10px',
                         }}
                     >
+                        <span>
+                            {formatTime(currentTime)}
+                        </span>
                         <input
                             type="range"
                             min={0}
@@ -241,7 +282,7 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                             onChange={(e) => handleSeek(Number(e.target.value))}
                         />
                         <span>
-                            {formatTime(currentTime)} / {formatTime(duration)}
+                            {formatTime(duration)}
                         </span>
                     </div>
                     {/* Player controls */}
@@ -255,6 +296,12 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                             width: "30%",
                         }}
                     >
+                        <button
+                            onClick={toggleShuffleMode}
+                            className="control-button small"
+                        >
+                            {shuffleMode ? 'ON' : 'OFF'}
+                        </button>
                         <button
                             onClick={playPreviousSong}
                             className="control-button small"
@@ -277,6 +324,12 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                         >
                             <BiSkipNextCircle size={30} />
                         </button>
+                        <button
+                            onClick={toggleRepeatMode}
+                            className="control-button small"
+                        >
+                            {repeatMode}
+                        </button>
                     </div>
                 </div>
 
@@ -290,7 +343,7 @@ const MusicPlayer = ({}: MusicPlayerProps) => {
                     onChange={handleFileChange}
                 />
             </div>
-        </>
+        </div>
     );
 };
 

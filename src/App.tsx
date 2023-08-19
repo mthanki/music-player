@@ -1,3 +1,4 @@
+import AboutMe from "./AboutMe/AboutMe";
 import "./App.css";
 import Container from "./Container/Container";
 import MusicPlayer from "./music-player/MusicPlayer";
@@ -9,6 +10,7 @@ function App() {
         <section className="App">
             <SongProvider>
                 <Container>
+                    <AboutMe />
                     <SongList />
                     <MusicPlayer />
                 </Container>

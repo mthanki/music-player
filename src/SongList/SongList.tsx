@@ -2,6 +2,7 @@ import "./SongList.css";
 import React, { useRef, useState } from 'react';
 import { useSongContext } from '../SongContext';
 import { formatTime } from "../utils";
+import AboutMe from "../AboutMe/AboutMe";
 
 interface SongListProps { }
 
@@ -64,7 +65,7 @@ const SongList: React.FC<SongListProps> = () => {
         handleFileEvent(droppedFiles);
     };
 
-    return (
+    return (<>
         <div onDrop={handleFileDrop} onDragOver={handleDragOver} className="song-list-container">
             <input
                 type="file"
@@ -93,6 +94,7 @@ const SongList: React.FC<SongListProps> = () => {
                 ))}
             </ul>
         </div>
+    </>
     );
 };
 

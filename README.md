@@ -1,5 +1,7 @@
 # Note
 
+https://music-player-mthanki.vercel.app/
+
 There are still some optimizations to be made, mainly moving styles into appropiate class and so on..
 
 But the main functionality is there and side of one bug(first song plays after last even when repeat is set to none) rest of the functionality works well

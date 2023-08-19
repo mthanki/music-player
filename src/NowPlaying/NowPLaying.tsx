@@ -1,28 +1,19 @@
 import React from "react";
-import { Song } from "../music-player/MusicPlayer";
+import { useSongContext } from "../SongContext";
 
-interface NowPlayingProps {
-    song: Song | null;
-}
+const NowPlaying: React.FC<{}> = () => {
+    const { state } = useSongContext();
+    const { songs, currentSongIndex } = state;
+    const currentSong = songs[currentSongIndex];
 
-const NowPlaying: React.FC<NowPlayingProps> = ({ song }) => {
-    if (!song) {
+    if (!currentSong) {
         return null; // No song is currently playing
     }
 
-    const { name } = song;
+    const { name } = currentSong;
 
     return (
-        <div>
-            <div>
-                <img
-                    style={{ height: '200px' }}
-                    src="https://via.placeholder.com/200.png/09f/fff"
-                    alt="Album Art"
-                />
-                <h2>{name}</h2>
-            </div>
-        </div>
+        <h2>{name}</h2>
     );
 };
 

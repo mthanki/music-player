@@ -1,21 +1,16 @@
 .control-panel {
-    /* background-color: rgba(0,0,0, .5); */
-    background-image: linear-gradient(to right bottom, #de65f3, #dc94ff, #dfbbff, #ebdeff, #ffffff);
-    display: flex;
-    justify-content: space-evenly;
-    align-items:center;
+    background-color: rgba(255,255,255, .4);
+    margin: 10px;
     border-radius: 25px;
     padding: 20px;
-    width: 80vw;
     margin-bottom: 3px;
-    border-left: 15px solid black;
-    border-right: 15px solid black;
+    border: 1px solid black;
+    text-align: center;
 }
 
 .control-button {
     cursor: pointer;
     background-color: black;
-    /* background-image: radial-gradient(circle, #000000, #18100f, #261c16, #30281a, #353721, #3a4528, #3c5433, #396441, #427549, #4b8750, #569a56, #62ac5c); */
     color: white;
     height: 50px;
     width: 50px;
@@ -23,76 +18,10 @@
     align-items: center;
     justify-content: center;
     display: flex;
+    margin-inline: 5px;
 }
 
 .small {
     height: 40px;
     width: 40px;
-}
-
-.songs-list {
-    padding-inline-start: 0;
-    overflow: auto;
-    list-style-type: none;
-    max-height: 150px;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    align-items: center;
-    justify-items: center;
-    justify-self: center;
-}
-
-.songs-list::-webkit-scrollbar {
-    width: 7px;
-    background-color: transparent;
-}
-
-.songs-list:hover::-webkit-scrollbar {
-    width: 7px;
-    background-color: #f5f5f500;
-}
-
-.songs-list::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 10px;
-}
-
-.songs-list:hover::-webkit-scrollbar-track {
-    background: #f1f1f173;
-    border-radius: 10px;
-}
-
-.songs-list::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 10px;
-}
-
-.songs-list:hover::-webkit-scrollbar-thumb {
-    background: #bac8ca;
-    border-radius: 10px;
-}
-
-.songs-list::-webkit-scrollbar-thumb:hover {
-    background: #78b10f;
-}
-
-.highlighted-item {
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color .1s, color .1s;
-
-    /* margin-right: 10px;
-    margin-left: 10px; */
-}
-
-.highlighted-item:hover {
-    cursor: pointer;
-    background-color: rgba(137, 136, 136, 0.058);
-    color: white;
-}
-
-.playing {
-    text-decoration: underline;
 }

@@ -1,3 +1,15 @@
+# Note
+
+There are still some optimizations to be made, mainly moving styles into appropiate class and so on..
+
+But the main functionality is there and side of one bug(first song plays after last even when repeat is set to none) rest of the functionality works well
+
+Of course the last thing is simply using some UI library and make good looks but that's that
+
+and testing and so on...
+
+but this isn't a project that warrants it it's a big hurdle to store and persist files in browser(non-text) storage
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

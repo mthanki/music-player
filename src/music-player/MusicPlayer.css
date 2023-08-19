@@ -1,0 +1,27 @@
+.control-panel {
+    background-color: rgba(255,255,255, .4);
+    margin: 10px;
+    border-radius: 25px;
+    padding: 20px;
+    margin-bottom: 3px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.control-button {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-inline: 5px;
+}
+
+.small {
+    height: 40px;
+    width: 40px;
+}
